@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ethers } from 'ethers';
+import Moralis from 'moralis';
 
 const contractABI = [
   {
@@ -88,13 +89,36 @@ const contractABI = [
   },
 ];
 
+const moralisOptions = {
+  chains: ['0x13881'],
+  description: 'Listen to UserAdded events',
+  tag: 'UserRegistry',
+  abi: contractABI,
+  includeContractLogs: true,
+  allAddresses: false,
+  topic0: ['UserAdded(string,string,string)'],
+  webhookUrl: 'https://www.example.com',
+};
+
 @Injectable()
 export class BlockchainService {
   private provider: ethers.providers.JsonRpcProvider;
   private contract: ethers.Contract;
   private signer: ethers.Signer;
+  private streamId: string;
 
   constructor() {
+    this.initializeMoralis();
+    this.initializeEthers();
+  }
+
+  private async initializeMoralis() {
+    await Moralis.start({ apiKey: process.env.MORALIS_API_KEY }); // Replace with your Moralis API Key
+    const stream = await Moralis.Streams.add(moralisOptions);
+    console.log(`Moralis Stream created is : ${JSON.stringify(stream)}`);
+  }
+
+  private initializeEthers() {
     this.provider = new ethers.providers.JsonRpcProvider(
       'https://polygon-mumbai.infura.io/v3/358f5ae5bc804b81ad74ce87a3682743',
     );
