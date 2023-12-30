@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Button } from "@/components/ui/button"
 
 export const UserRegistration = ({ onUserAdded }: { onUserAdded: (user: any) => void }) => {
   const [user, setUser] = useState({
@@ -59,13 +60,13 @@ export const UserRegistration = ({ onUserAdded }: { onUserAdded: (user: any) => 
           placeholder="123-456-7890"
         />
       </div>
-      <button
+      <Button
         type="submit"
         className="w-full bg-black rounded-md py-2 mt-6 font-bold uppercase tracking-widest hover:bg-opacity-90"
         disabled={isLoading}
       >
         {isLoading ? 'Registering...' : 'Sign Up'}
-      </button>
+      </Button>
     </form>
   );
 };
