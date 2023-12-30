@@ -109,7 +109,7 @@ export class BlockchainService {
     email: string;
     phone: string;
   }): Promise<{ address: string }> {
-    const transaction = await this.contract.registerUser(
+    const transaction = await this.contract.addUser(
       userData.email,
       userData.phone,
       userData.name,
