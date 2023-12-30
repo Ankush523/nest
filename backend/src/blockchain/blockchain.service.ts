@@ -120,7 +120,7 @@ export class BlockchainService {
       userData.name,
     );
     const receipt = await transaction.wait();
-
+    console.log(receipt);
     // Assuming the transaction receipt contains the address of the new user
     const userAddress = receipt.events?.[0].args?.[0];
 

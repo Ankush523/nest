@@ -31,13 +31,13 @@ const Home: React.FC = () => {
   }, []);
 
   return (
-    <div className="mx-auto p-10 bg-gray-100 h-[100%]">
-      <div className="max-w-2xl shadow-2xl mx-auto rounded-lg p-6 bg-white dark:bg-gray-800 animate-slideIn">
+    <div className="mx-auto p-10 bg-black h-[100%]">
+      <div className="max-w-2xl mx-auto rounded-lg p-6 bg-white dark:bg-gray-800 animate-slideIn">
         <h1 className="text-2xl font-semibold mb-4 text-center text-indigo-600 dark:text-indigo-300">User Registration</h1>
          <UserRegistration onUserAdded={addUser} />
       </div>
 
-      <div className="max-w-4xl mx-auto mt-12 shadow-2xl rounded-lg p-6 bg-white dark:bg-gray-800 animate-fadeIn">
+      <div className="max-w-4xl mx-auto mt-12 rounded-lg p-6 bg-white dark:bg-gray-800 animate-fadeIn">
         <h2 className="text-xl font-bold mb-6 text-center text-indigo-600 dark:text-indigo-300">Registered Users</h2>
         <UserList users={users} />
       </div>

@@ -17,7 +17,7 @@ export class UsersService {
   ) {}
 
   async findAll(query: QueryParams): Promise<User[]> {
-    const resPerPage = 3;
+    const resPerPage = 10;
     const currentPage = Number(query.page) || 1;
     const skip = resPerPage * (currentPage - 1);
 
