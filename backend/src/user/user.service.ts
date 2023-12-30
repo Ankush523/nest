@@ -4,6 +4,11 @@ import { Model } from 'mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import { BlockchainService } from '../blockchain/blockchain.service';
 
+interface QueryParams {
+  page?: string;
+  keyword?: string;
+}
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -11,8 +16,25 @@ export class UsersService {
     private blockchainService: BlockchainService,
   ) {}
 
-  async findAll(): Promise<User[]> {
-    return await this.userModel.find().exec();
+  async findAll(query: QueryParams): Promise<User[]> {
+    const resPerPage = 3;
+    const currentPage = Number(query.page) || 1;
+    const skip = resPerPage * (currentPage - 1);
+
+    const keyword = query.keyword
+      ? {
+          title: {
+            $regex: query.keyword,
+            $options: 'i',
+          },
+        }
+      : {};
+
+    const users = await this.userModel
+      .find({ ...keyword })
+      .limit(resPerPage)
+      .skip(skip);
+    return users;
   }
 
   async findOne(id: string): Promise<User> {
@@ -26,7 +48,6 @@ export class UsersService {
   }): Promise<User> {
     const blockchainResponse = this.blockchainService.registerUser(userData);
 
-    // Assuming blockchainResponse contains the Ethereum address of the new user
     const newUser = new this.userModel({
       ...userData,
       address: (await blockchainResponse).address,

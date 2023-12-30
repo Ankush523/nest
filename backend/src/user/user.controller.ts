@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
 import { UsersService } from './user.service';
 
 @Controller('users')
@@ -6,8 +6,8 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  async getAllUsers() {
-    return await this.usersService.findAll();
+  async getAllUsers(@Query() query: any) {
+    return await this.usersService.findAll(query);
   }
 
   @Get(':id')

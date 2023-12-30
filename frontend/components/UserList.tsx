@@ -1,46 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 
 interface User {
-    id: string;
-    name: string;
-    email: string;
-    phone: string;
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
 }
-  
-export const UserList = () => {
-    const [users, setUsers] = useState<User[]>([]); // Using the User interface
-    const [searchTerm, setSearchTerm] = useState('');
-  
-    useEffect(() => {
-      const fetchUsers = async () => {
-        try {
-          const response = await axios.get('/api/users');
-          setUsers(response.data);
-        } catch (error) {
-          console.error('Error fetching users:', error);
-        }
-      };
-      fetchUsers();
-    }, []);
-  
-    return (
-      <div>
-        <input
-          type="text"
-          placeholder="Search users..."
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="border rounded p-2 mb-4 w-full text-black"
-        />
-        <div>
-          {users.filter(user => user.name.toLowerCase().includes(searchTerm.toLowerCase())).map((user, index) => (
-            <div key={index} className="border-b py-2">
-              <p>Name: {user.name}</p>
-              <p>Email: {user.email}</p>
-              <p>Phone: {user.phone}</p>
-            </div>
-          ))}
-        </div>
+
+interface UserListProps {
+  users: User[];
+}
+
+export const UserList: React.FC<UserListProps> = ({ users }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  return (
+    <div className="max-w-4xl mx-auto">
+      <input
+        type="text"
+        placeholder="Search users..."
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="border border-indigo-300 rounded p-2 mb-4 w-full text-gray-700 focus:ring-indigo-500 focus:border-indigo-500"
+      />
+      <div className="space-y-4">
+        {users.filter(user => user.name.toLowerCase().includes(searchTerm.toLowerCase())).map((user, index) => (
+          <div key={index} className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow duration-200">
+            <p className="text-lg font-semibold text-gray-800">Name: {user.name}</p>
+            <p className="text-gray-600">Email: {user.email}</p>
+            <p className="text-gray-600">Phone: {user.phone}</p>
+          </div>
+        ))}
       </div>
-    );
-  };
+    </div>
+  );
+};

@@ -92,15 +92,20 @@ const contractABI = [
 export class BlockchainService {
   private provider: ethers.providers.JsonRpcProvider;
   private contract: ethers.Contract;
+  private signer: ethers.Signer;
 
   constructor() {
     this.provider = new ethers.providers.JsonRpcProvider(
       'https://polygon-mumbai.infura.io/v3/358f5ae5bc804b81ad74ce87a3682743',
     );
+    this.signer = new ethers.Wallet(
+      '30795dd9cb041f09a52bc664a51dde47ec87341eee57d6cb527c3b778fc0d37f',
+      this.provider,
+    );
     this.contract = new ethers.Contract(
       '0x80D31f5FE4Ec2675E61c92852a4C56b6B909eF91',
       contractABI,
-      this.provider.getSigner(),
+      this.signer,
     );
   }
 
